@@ -1,10 +1,10 @@
 (function() {
-  var DrawingCanvas = window.DrawingCanvas = function(id, width, height) {
-    this.width = width;
-    this.height = height;
+  var DrawingCanvas = window.DrawingCanvas = function(id) {
     this.canvas = document.getElementById(id);
-    this.canvas.width = width;
-    this.canvas.height = height;
+    // this.canvas.width = width;
+    // this.canvas.height = height;
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
     this.ctx = this.canvas.getContext('2d');
     this.prevX = 0;
     this.prevY = 0;
