@@ -43,6 +43,10 @@
     this.drawing = false;
   };
 
+  DrawingCanvas.prototype.mouseWheel = function (e) {
+    console.log(e)
+  };
+
   DrawingCanvas.prototype.mouseOut = function (e) {
     if(this.drawing) {
       this.saveFrame();
