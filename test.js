@@ -1,36 +1,36 @@
 (function() {
-  var jQuery;
-
-  if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.4.2') {
-      var script_tag = document.createElement('script');
-      script_tag.setAttribute("type","text/javascript");
-      script_tag.setAttribute("src",
-          "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
-      if (script_tag.readyState) {
-        script_tag.onreadystatechange = function () { // For old versions of IE
-            if (this.readyState == 'complete' || this.readyState == 'loaded') {
-                scriptLoadHandler();
-            }
-        };
-      } else { // Other browsers
-        script_tag.onload = scriptLoadHandler;
-      }
-      // Try to find the head, otherwise default to the documentElement
-      (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
-  } else {
-      // The jQuery version on the window is the one we want to use
-      jQuery = window.jQuery;
-      main();
-  }
-
-    /******** Called once jQuery has loaded ******/
-  function scriptLoadHandler() {
-      // Restore $ and window.jQuery to their previous values and store the
-      // new jQuery in our local jQuery variable
-      jQuery = window.jQuery.noConflict(true);
-      // Call our main function
-      main();
-  }
+  // var jQuery;
+  //
+  // if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.4.2') {
+  //     var script_tag = document.createElement('script');
+  //     script_tag.setAttribute("type","text/javascript");
+  //     script_tag.setAttribute("src",
+  //         "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
+  //     if (script_tag.readyState) {
+  //       script_tag.onreadystatechange = function () { // For old versions of IE
+  //           if (this.readyState == 'complete' || this.readyState == 'loaded') {
+  //               scriptLoadHandler();
+  //           }
+  //       };
+  //     } else { // Other browsers
+  //       script_tag.onload = scriptLoadHandler;
+  //     }
+  //     // Try to find the head, otherwise default to the documentElement
+  //     (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
+  // } else {
+  //     // The jQuery version on the window is the one we want to use
+  //     jQuery = window.jQuery;
+  //     main();
+  // }
+  //
+  //   /******** Called once jQuery has loaded ******/
+  // function scriptLoadHandler() {
+  //     // Restore $ and window.jQuery to their previous values and store the
+  //     // new jQuery in our local jQuery variable
+  //     jQuery = window.jQuery.noConflict(true);
+  //     // Call our main function
+  //     main();
+  // }
 
   var DrawingCanvas = window.DrawingCanvas = function(id, width, height) {
     this.width = width;
@@ -80,6 +80,16 @@
     this.drawing = false;
   };
 
+
+  DrawingCanvas.prototype.mouseWheel = function (e) {
+    if (e.deltaY > 0) {
+      this.scaleDown();
+    } else if (e.deltaY < 0) {
+      this.scaleUp();
+    }
+  };
+
+
   DrawingCanvas.prototype.mouseOut = function (e) {
     if(this.drawing) {
       this.saveFrame();
@@ -87,6 +97,14 @@
     this.setToLastFrame();
 
     this.drawing = false;
+  };
+
+  DrawingCanvas.prototype.scaleUp = function () {
+    this.size = this.size * 1.1;
+  };
+
+  DrawingCanvas.prototype.scaleDown = function () {
+    this.size = this.size / 1.1;
   };
 
   DrawingCanvas.prototype.setToLastFrame = function() {
@@ -230,16 +248,15 @@
 
     /******** Our main function ********/
   function main() {
-      jQuery(document).ready(function($) {
+    var drawingCanvas = new DrawingCanvas("drawing-canvas", 400, 400)
+    var canvasElement = document.getElementById("drawing-canvas");
+    canvasElement.addEventListener("mousedown", drawingCanvas.mouseDown.bind(drawingCanvas), true);
+    canvasElement.addEventListener("mouseup", drawingCanvas.mouseUp.bind(drawingCanvas), true);
+    canvasElement.addEventListener("mousemove", drawingCanvas.mouseMove.bind(drawingCanvas), true);
+    canvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
 
-        $("#container").html("HELLO");
-        var drawingCanvas = new DrawingCanvas("drawing-canvas", 400, 400)
-        $("#drawing-canvas").mousedown(drawingCanvas.mouseDown.bind(drawingCanvas));
-        $("#drawing-canvas").mouseup(drawingCanvas.mouseUp.bind(drawingCanvas));
-        $("#drawing-canvas").mousemove(drawingCanvas.mouseMove.bind(drawingCanvas));
-
-
-      });
   }
+
+  main();
 
 })(this)
