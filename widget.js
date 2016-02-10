@@ -220,7 +220,6 @@
     canvasElement.addEventListener("mouseup", drawingCanvas.mouseUp.bind(drawingCanvas), true);
     canvasElement.addEventListener("mousemove", drawingCanvas.mouseMove.bind(drawingCanvas), true);
     canvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
-    canvasElement.style.border = "1px solid black";
 
   }
 
