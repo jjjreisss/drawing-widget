@@ -1,9 +1,9 @@
-  var DrawingCanvas = window.DrawingCanvas = function(id, width, height) {
+  var DrawingCanvas = window.DrawingCanvas = function(id) {
     this.width = width;
     this.height = height;
     this.canvas = document.getElementById(id);
-    this.canvas.width = width;
-    this.canvas.height = height;
+    // this.canvas.width = width;
+    // this.canvas.height = height;
     this.ctx = this.canvas.getContext('2d');
     this.prevX = 0;
     this.prevY = 0;
