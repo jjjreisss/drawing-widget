@@ -1,8 +1,6 @@
 (function() {
   var DrawingCanvas = window.DrawingCanvas = function(id) {
     this.canvas = document.getElementById(id);
-    // this.canvas.width = width;
-    // this.canvas.height = height;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.ctx = this.canvas.getContext('2d');
@@ -49,6 +47,7 @@
 
 
   DrawingCanvas.prototype.mouseWheel = function (e) {
+    e.preventDefault();
     if (e.deltaY > 0) {
       this.scaleDown();
     } else if (e.deltaY < 0) {
