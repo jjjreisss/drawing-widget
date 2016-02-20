@@ -286,8 +286,16 @@
   function main() {
     var drawingWidgetElement = document.getElementById("drawing-widget");
     var drawingCanvasElement = document.createElement("canvas");
-    drawingCanvasElement.style.width = drawingWidgetElement.style.width;
-    drawingCanvasElement.style.height = drawingWidgetElement.style.height;
+
+    drawingWidgetElement.style.width = drawingWidgetElement.getAttribute("width") + " px";
+    drawingWidgetElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+
+    drawingCanvasElement.style.width = drawingWidgetElement.getAttribute("width") * 4/5 + " px";
+    drawingCanvasElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+
+    drawingCanvasElement.setAttribute("width", drawingWidgetElement.getAttribute("width") * 4/5);
+    drawingCanvasElement.setAttribute("height", drawingWidgetElement.getAttribute("height"));
+
     drawingCanvasElement.id = "drawing-canvas";
     drawingWidgetElement.appendChild(drawingCanvasElement);
     var drawingCanvas = new DrawingCanvas("drawing-canvas");
