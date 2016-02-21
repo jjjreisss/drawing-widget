@@ -219,7 +219,7 @@
     var pickerImg = new Image();
     // if (this.colorPickerCanvas.width === 80) {
     pickerImg.crossOrigin="Anonymous";
-      pickerImg.src = 'https://www.dropbox.com/s/54gttg7o1yl4xkj/color-picker-80-500.png?dl=0';
+      pickerImg.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/v1456042138/color-picker-80-500_uyhcxj.png";
     // } else {
     //   pickerImg.src = './color-picker-64-400.png';
     // }
@@ -232,15 +232,15 @@
     var x = e.clientX - this.colorPickerCanvas.getBoundingClientRect().left;
     var y = e.clientY - this.colorPickerCanvas.getBoundingClientRect().top;
     var imgData = this.colorPickerContext.getImageData(x, y, 1, 1).data;
-    var rgbArray = imgData.slice(0,3);
+    var rgbArray = [].slice.call(imgData, 0, 3);
     this.rgbString = "rgb(" + rgbArray.join(",") + ")";
+    console.log(this.rgbString);
     return this.rgbString;
   };
 
   ColorPicker.prototype.color = function () {
     return this.rgbString;
   };
-
 
 
     /******** Our main function ********/
@@ -270,21 +270,33 @@
     drawingWidgetElement.appendChild(drawingCanvasElement);
     drawingWidgetElement.appendChild(colorPickerElement);
 
-    var drawingCanvas = new DrawingCanvas("drawing-canvas");
-    var colorPicker = new ColorPicker("color-picker");
+    drawingCanvas = new DrawingCanvas("drawing-canvas");
+    colorPicker = new ColorPicker("color-picker");
 
     drawingCanvasElement.addEventListener("mousedown", drawingCanvas.mouseDown.bind(drawingCanvas), true);
     drawingCanvasElement.addEventListener("mouseup", drawingCanvas.mouseUp.bind(drawingCanvas), true);
     drawingCanvasElement.addEventListener("mousemove", drawingCanvas.mouseMove.bind(drawingCanvas), true);
     drawingCanvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
 
-    colorPickerElement.addEventListener("mousedown", colorPicker.pickColor.bind(colorPicker), true);
+    colorPickerElement.addEventListener(
+      "mousedown",
+      function(e) {
+        var newColor = colorPicker.pickColor.bind(colorPicker, e)();
+        drawingCanvas.setColor.bind(drawingCanvas, newColor)();
+        drawingCanvas.previewStroke.bind(drawingCanvas, e)();
+      },
+      true
+    );
+
+
+    // colorPickerElement.addEventListener("mousedown", colorPicker.pickColor.bind(colorPicker), true);
     // colorPickerElement.addEventListener("mouseup", colorPicker.mouseUp.bind(colorPicker), true);
     // colorPickerElement.addEventListener("mousemove", colorPicker.mouseMove.bind(colorPicker), true);
     // colorPickerElement.addEventListener("mousewheel", colorPicker.mouseWheel.bind(colorPicker), true);
 
 
   }
+
 
   main();
 
