@@ -292,7 +292,7 @@
     saveImageElement.style.padding = "2px";
     saveImageElement.style.borderRadius = "5px";
 
-    var floppySize = widgetWidth * 1/20;
+    var floppySize = widgetWidth * 1/25;
     saveImagePicture.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/w_" + floppySize + ",h_" + floppySize + "/save_tkicwp.png"
 
     clearImageElement.style.position = "absolute";
@@ -301,7 +301,7 @@
     clearImageElement.style.padding = "2px";
     clearImageElement.style.borderRadius = "5px";
 
-    var newPageSize = widgetWidth * 1/20;
+    var newPageSize = widgetWidth * 1/25;
     clearImagePicture.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/w_" + newPageSize + ",h_" + newPageSize + "/new_eolomw.png"
 
     drawingCanvasElement.id = "drawing-canvas";
