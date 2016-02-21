@@ -42,7 +42,7 @@
 
   DrawingCanvas.prototype.mouseUp = function (e) {
     if (this.drawing) {
-      this.saveFrame();  
+      this.saveFrame();
     }
     this.drawing = false;
   };
@@ -203,6 +203,10 @@
     return this.ctx.getImageData(0,0,this.width,this.height);
   };
 
+  DrawingCanvas.prototype.getPNG = function () {
+    return this.canvas.toDataURL("image/png");
+  };
+
   DrawingCanvas.prototype.putImageData = function (imageData) {
     this.clear();
     this.ctx.putImageData(imageData, 0, 0);
@@ -249,6 +253,7 @@
     var colorPickerContainer = document.createElement("div");
     var colorPickerElement = document.createElement("canvas");
     var colorSampleElement = document.createElement("div");
+    var saveImageElement = document.createElement("button");
     var widgetWidth = drawingWidgetElement.getAttribute("width") || 400;
     var widgetHeight = drawingWidgetElement.getAttribute("height") || 300;
 
@@ -278,14 +283,21 @@
     colorSampleElement.style.position = "absolute";
     colorSampleElement.style.bottom = "0";
 
+    saveImageElement.innerHTML = "SAVE";
+    saveImageElement.style.position = "absolute";
+    saveImageElement.style.bottom = "3px";
+    saveImageElement.style.right = "3px";
+
     drawingCanvasElement.id = "drawing-canvas";
     colorSampleElement.id = "color-sample";
     colorPickerElement.id = "color-picker";
+    saveImageElement.id = "save-image";
 
     drawingWidgetElement.appendChild(drawingCanvasElement);
     drawingWidgetElement.appendChild(colorPickerContainer);
     colorPickerContainer.appendChild(colorPickerElement);
     colorPickerContainer.appendChild(colorSampleElement);
+    colorSampleElement.appendChild(saveImageElement);
 
     drawingCanvas = new DrawingCanvas("drawing-canvas");
     colorPicker = new ColorPicker("color-picker");
@@ -325,6 +337,15 @@
           drawingCanvas.setColor.bind(drawingCanvas, newColor)();
           colorSampleElement.style.background = newColor;
         }
+      },
+      true
+    );
+
+    saveImageElement.addEventListener(
+      "click",
+      function(e) {
+        var imagePNG = drawingCanvas.getPNG.bind(drawingCanvas)();
+        window.open(imagePNG);
       },
       true
     );
