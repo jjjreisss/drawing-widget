@@ -255,6 +255,8 @@
     var colorSampleElement = document.createElement("div");
     var saveImageElement = document.createElement("button");
     var saveImagePicture = document.createElement("img");
+    var clearImageElement = document.createElement("button");
+    var clearImagePicture = document.createElement("img");
     var widgetWidth = drawingWidgetElement.getAttribute("width") || 400;
     var widgetHeight = drawingWidgetElement.getAttribute("height") || 300;
 
@@ -293,6 +295,15 @@
     var floppySize = widgetWidth * 1/20;
     saveImagePicture.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/w_" + floppySize + ",h_" + floppySize + "/save_tkicwp.png"
 
+    clearImageElement.style.position = "absolute";
+    clearImageElement.style.bottom = "3px";
+    clearImageElement.style.left = "3px";
+    clearImageElement.style.padding = "2px";
+    clearImageElement.style.borderRadius = "5px";
+
+    var newPageSize = widgetWidth * 1/20;
+    clearImagePicture.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/w_" + newPageSize + ",h_" + newPageSize + "/new_eolomw.png"
+
     drawingCanvasElement.id = "drawing-canvas";
     colorSampleElement.id = "color-sample";
     colorPickerElement.id = "color-picker";
@@ -304,6 +315,8 @@
     colorPickerContainer.appendChild(colorSampleElement);
     colorSampleElement.appendChild(saveImageElement);
     saveImageElement.appendChild(saveImagePicture);
+    colorSampleElement.appendChild(clearImageElement);
+    clearImageElement.appendChild(clearImagePicture);
 
     drawingCanvas = new DrawingCanvas("drawing-canvas");
     colorPicker = new ColorPicker("color-picker");
@@ -352,6 +365,14 @@
       function(e) {
         var imagePNG = drawingCanvas.getPNG.bind(drawingCanvas)();
         window.open(imagePNG);
+      },
+      true
+    );
+
+    clearImageElement.addEventListener(
+      "click",
+      function(e) {
+        var imagePNG = drawingCanvas.clear.bind(drawingCanvas)();
       },
       true
     );
