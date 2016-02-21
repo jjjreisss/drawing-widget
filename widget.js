@@ -232,7 +232,6 @@
     var imgData = this.colorPickerContext.getImageData(x, y, 1, 1).data;
     var rgbArray = [].slice.call(imgData, 0, 3);
     this.rgbString = "rgb(" + rgbArray.join(",") + ")";
-    console.log(this.rgbString);
     return this.rgbString;
   };
 
@@ -248,8 +247,8 @@
     var colorPickerContainer = document.createElement("div");
     var colorPickerElement = document.createElement("canvas");
     var colorSampleElement = document.createElement("div");
-    var widgetWidth = drawingWidgetElement.getAttribute("width");
-    var widgetHeight = drawingWidgetElement.getAttribute("height");
+    var widgetWidth = drawingWidgetElement.getAttribute("width") || 400;
+    var widgetHeight = drawingWidgetElement.getAttribute("height") || 300;
 
     drawingWidgetElement.style.width = widgetWidth + "px";
     drawingWidgetElement.style.height = widgetHeight + "px";
