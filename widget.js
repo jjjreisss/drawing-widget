@@ -276,6 +276,7 @@
     drawingCanvasElement.addEventListener("mouseup", drawingCanvas.mouseUp.bind(drawingCanvas), true);
     drawingCanvasElement.addEventListener("mousemove", drawingCanvas.mouseMove.bind(drawingCanvas), true);
     drawingCanvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
+    drawingCanvasElement.addEventListener("mouseout", drawingCanvas.setToLastFrame.bind(drawingCanvas), true);
 
     colorPickerElement.addEventListener(
       "mousedown",
