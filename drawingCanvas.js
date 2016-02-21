@@ -1,3 +1,4 @@
+(function() {
   var DrawingCanvas = window.DrawingCanvas = function(id) {
     this.width = width;
     this.height = height;
@@ -193,3 +194,5 @@
     this.clear();
     this.history = [this.getImageData(), this.getImageData(), this.getImageData(), this.getImageData(), this.getImageData()];
   };
+
+})()

@@ -211,17 +211,91 @@
     this.history = [this.getImageData(), this.getImageData(), this.getImageData(), this.getImageData(), this.getImageData()];
   };
 
+  var ColorPicker = window.ColorPicker = function(id) {
+    this.colorPickerCanvas = document.getElementById(id);
+    this.colorPickerContext = this.colorPickerCanvas.getContext('2d');
+
+    var pickerImg = new Image();
+    // if (this.colorPickerCanvas.width === 80) {
+    pickerImg.crossOrigin="Anonymous";
+      pickerImg.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/v1456042138/color-picker-80-500_uyhcxj.png";
+    // } else {
+    //   pickerImg.src = './color-picker-64-400.png';
+    // }
+    pickerImg.onload = function() {
+      this.colorPickerContext.drawImage(pickerImg, 0, 0);
+    }.bind(this);
+  };
+
+  ColorPicker.prototype.pickColor = function (e) {
+    var x = e.clientX - this.colorPickerCanvas.getBoundingClientRect().left;
+    var y = e.clientY - this.colorPickerCanvas.getBoundingClientRect().top;
+    var imgData = this.colorPickerContext.getImageData(x, y, 1, 1).data;
+    var rgbArray = [].slice.call(imgData, 0, 3);
+    this.rgbString = "rgb(" + rgbArray.join(",") + ")";
+    console.log(this.rgbString);
+    return this.rgbString;
+  };
+
+  ColorPicker.prototype.color = function () {
+    return this.rgbString;
+  };
+
 
     /******** Our main function ********/
   function main() {
-    var drawingCanvas = new DrawingCanvas("drawing-canvas")
-    var canvasElement = document.getElementById("drawing-canvas");
-    canvasElement.addEventListener("mousedown", drawingCanvas.mouseDown.bind(drawingCanvas), true);
-    canvasElement.addEventListener("mouseup", drawingCanvas.mouseUp.bind(drawingCanvas), true);
-    canvasElement.addEventListener("mousemove", drawingCanvas.mouseMove.bind(drawingCanvas), true);
-    canvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
+    var drawingWidgetElement = document.getElementById("drawing-widget");
+    var drawingCanvasElement = document.createElement("canvas");
+    var colorPickerElement = document.createElement("canvas");
+
+    drawingWidgetElement.style.width = drawingWidgetElement.getAttribute("width") + " px";
+    drawingWidgetElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+
+    colorPickerElement.style.width = drawingWidgetElement.getAttribute("width") * 1/5 + " px";
+    colorPickerElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+
+    colorPickerElement.setAttribute("width", drawingWidgetElement.getAttribute("width") * 1/5);
+    colorPickerElement.setAttribute("height", drawingWidgetElement.getAttribute("height"));
+
+    drawingCanvasElement.style.width = drawingWidgetElement.getAttribute("width") * 4/5 + " px";
+    drawingCanvasElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+
+    drawingCanvasElement.setAttribute("width", drawingWidgetElement.getAttribute("width") * 4/5);
+    drawingCanvasElement.setAttribute("height", drawingWidgetElement.getAttribute("height"));
+
+    drawingCanvasElement.id = "drawing-canvas";
+    colorPickerElement.id = "color-picker";
+
+    drawingWidgetElement.appendChild(drawingCanvasElement);
+    drawingWidgetElement.appendChild(colorPickerElement);
+
+    drawingCanvas = new DrawingCanvas("drawing-canvas");
+    colorPicker = new ColorPicker("color-picker");
+
+    drawingCanvasElement.addEventListener("mousedown", drawingCanvas.mouseDown.bind(drawingCanvas), true);
+    drawingCanvasElement.addEventListener("mouseup", drawingCanvas.mouseUp.bind(drawingCanvas), true);
+    drawingCanvasElement.addEventListener("mousemove", drawingCanvas.mouseMove.bind(drawingCanvas), true);
+    drawingCanvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
+
+    colorPickerElement.addEventListener(
+      "mousedown",
+      function(e) {
+        var newColor = colorPicker.pickColor.bind(colorPicker, e)();
+        drawingCanvas.setColor.bind(drawingCanvas, newColor)();
+        drawingCanvas.previewStroke.bind(drawingCanvas, e)();
+      },
+      true
+    );
+
+
+    // colorPickerElement.addEventListener("mousedown", colorPicker.pickColor.bind(colorPicker), true);
+    // colorPickerElement.addEventListener("mouseup", colorPicker.mouseUp.bind(colorPicker), true);
+    // colorPickerElement.addEventListener("mousemove", colorPicker.mouseMove.bind(colorPicker), true);
+    // colorPickerElement.addEventListener("mousewheel", colorPicker.mouseWheel.bind(colorPicker), true);
+
 
   }
+
 
   main();
 
