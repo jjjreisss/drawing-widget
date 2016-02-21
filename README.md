@@ -14,17 +14,17 @@ into webpages with as little work as possible.
 
 To embed the widget, add the following lines in the body of your HTML file:
 
-'''
+```
   <div id="drawing-widget">
   <script async src="https://rawgit.com/jjjreisss/drawing-widget/gh-pages/widget.js"></script>
-'''
+```
 
 This will default to a 400px by 300px widget. In order to specify your own dimensions, change the code to:
 
-'''
+```
   <div id="drawing-widget" width=[your width] height=[your height]>
   <script async src="https://rawgit.com/jjjreisss/drawing-widget/gh-pages/widget.js"></script>
-'''
+```
 
 ## History
 
