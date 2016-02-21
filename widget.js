@@ -214,14 +214,13 @@
   var ColorPicker = window.ColorPicker = function(id) {
     this.colorPickerCanvas = document.getElementById(id);
     this.colorPickerContext = this.colorPickerCanvas.getContext('2d');
+    this.width = this.colorPickerCanvas.width;
+    this.height = this.colorPickerCanvas.height;
 
     var pickerImg = new Image();
-    // if (this.colorPickerCanvas.width === 80) {
     pickerImg.crossOrigin="Anonymous";
-      pickerImg.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/v1456042138/color-picker-80-500_uyhcxj.png";
-    // } else {
-    //   pickerImg.src = './color-picker-64-400.png';
-    // }
+    pickerImg.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/w_" + this.width + ",h_" + this.height + "/color-picker-80-500_uyhcxj.png";
+
     pickerImg.onload = function() {
       this.colorPickerContext.drawImage(pickerImg, 0, 0);
     }.bind(this);
@@ -246,28 +245,46 @@
   function main() {
     var drawingWidgetElement = document.getElementById("drawing-widget");
     var drawingCanvasElement = document.createElement("canvas");
+    var colorPickerContainer = document.createElement("div");
     var colorPickerElement = document.createElement("canvas");
+    var colorSampleElement = document.createElement("div");
+    var widgetWidth = drawingWidgetElement.getAttribute("width");
+    var widgetHeight = drawingWidgetElement.getAttribute("height");
 
-    drawingWidgetElement.style.width = drawingWidgetElement.getAttribute("width") + " px";
-    drawingWidgetElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+    drawingWidgetElement.style.width = widgetWidth + "px";
+    drawingWidgetElement.style.height = widgetHeight + "px";
 
-    colorPickerElement.style.width = drawingWidgetElement.getAttribute("width") * 1/5 + " px";
-    colorPickerElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+    drawingCanvasElement.style.width = widgetWidth * 4/5 + "px";
+    drawingCanvasElement.style.height = widgetHeight + "px";
 
-    colorPickerElement.setAttribute("width", drawingWidgetElement.getAttribute("width") * 1/5);
-    colorPickerElement.setAttribute("height", drawingWidgetElement.getAttribute("height"));
+    drawingCanvasElement.setAttribute("width", widgetWidth * 4/5);
+    drawingCanvasElement.setAttribute("height", widgetHeight);
 
-    drawingCanvasElement.style.width = drawingWidgetElement.getAttribute("width") * 4/5 + " px";
-    drawingCanvasElement.style.height = drawingWidgetElement.getAttribute("height") + " px";
+    colorPickerContainer.style.width = widgetWidth * 1/5 + "px";
+    colorPickerContainer.style.height = widgetHeight + "px";
+    colorPickerContainer.style.display = "inline-block";
+    colorPickerContainer.style.position = "absolute";
 
-    drawingCanvasElement.setAttribute("width", drawingWidgetElement.getAttribute("width") * 4/5);
-    drawingCanvasElement.setAttribute("height", drawingWidgetElement.getAttribute("height"));
+    colorPickerElement.style.width = widgetWidth * 1/5 + "px";
+    colorPickerElement.style.height = (widgetHeight - widgetWidth * 1/5) + "px";
+
+    colorPickerElement.setAttribute("width", widgetWidth * 1/5);
+    colorPickerElement.setAttribute("height", (widgetHeight - widgetWidth * 1/5));
+
+    colorSampleElement.style.width = widgetWidth * 1/5 + "px";
+    colorSampleElement.style.height = widgetWidth * 1/5 + "px";
+    colorSampleElement.style.background = "black";
+    colorSampleElement.style.position = "absolute";
+    colorSampleElement.style.bottom = "0";
 
     drawingCanvasElement.id = "drawing-canvas";
+    colorSampleElement.id = "color-sample";
     colorPickerElement.id = "color-picker";
 
     drawingWidgetElement.appendChild(drawingCanvasElement);
-    drawingWidgetElement.appendChild(colorPickerElement);
+    drawingWidgetElement.appendChild(colorPickerContainer);
+    colorPickerContainer.appendChild(colorPickerElement);
+    colorPickerContainer.appendChild(colorSampleElement);
 
     drawingCanvas = new DrawingCanvas("drawing-canvas");
     colorPicker = new ColorPicker("color-picker");
@@ -278,19 +295,42 @@
     drawingCanvasElement.addEventListener("mousewheel", drawingCanvas.mouseWheel.bind(drawingCanvas), true);
     drawingCanvasElement.addEventListener("mouseout", drawingCanvas.setToLastFrame.bind(drawingCanvas), true);
 
+    var changingColor = false;
+
     colorPickerElement.addEventListener(
       "mousedown",
       function(e) {
+        changingColor = true;
         var newColor = colorPicker.pickColor.bind(colorPicker, e)();
         drawingCanvas.setColor.bind(drawingCanvas, newColor)();
-        drawingCanvas.previewStroke.bind(drawingCanvas, e)();
+        colorSampleElement.style.background = newColor;
+      },
+      true
+    );
+
+    colorPickerElement.addEventListener(
+      "mouseup",
+      function(e) {
+        changingColor = false;
+      },
+      true
+    );
+
+    colorPickerElement.addEventListener(
+      "mousemove",
+      function(e) {
+        if (changingColor) {
+          var newColor = colorPicker.pickColor.bind(colorPicker, e)();
+          drawingCanvas.setColor.bind(drawingCanvas, newColor)();
+          colorSampleElement.style.background = newColor;
+        }
       },
       true
     );
 
 
     // colorPickerElement.addEventListener("mousedown", colorPicker.pickColor.bind(colorPicker), true);
-    // colorPickerElement.addEventListener("mouseup", colorPicker.mouseUp.bind(colorPicker), true);
+    // colorPickerElement.addEventListener("divmouseup", colorPicker.mouseUp.bind(colorPicker), true);
     // colorPickerElement.addEventListener("mousemove", colorPicker.mouseMove.bind(colorPicker), true);
     // colorPickerElement.addEventListener("mousewheel", colorPicker.mouseWheel.bind(colorPicker), true);
 
