@@ -254,6 +254,7 @@
     var colorPickerElement = document.createElement("canvas");
     var colorSampleElement = document.createElement("div");
     var saveImageElement = document.createElement("button");
+    var saveImagePicture = document.createElement("img");
     var widgetWidth = drawingWidgetElement.getAttribute("width") || 400;
     var widgetHeight = drawingWidgetElement.getAttribute("height") || 300;
 
@@ -283,10 +284,14 @@
     colorSampleElement.style.position = "absolute";
     colorSampleElement.style.bottom = "0";
 
-    saveImageElement.innerHTML = "SAVE";
     saveImageElement.style.position = "absolute";
     saveImageElement.style.bottom = "3px";
     saveImageElement.style.right = "3px";
+    saveImageElement.style.padding = "2px";
+    saveImageElement.style.borderRadius = "5px";
+
+    var floppySize = widgetWidth * 1/20;
+    saveImagePicture.src = "http://res.cloudinary.com/ddhru3qpb/image/upload/w_" + floppySize + ",h_" + floppySize + "/save_tkicwp.png"
 
     drawingCanvasElement.id = "drawing-canvas";
     colorSampleElement.id = "color-sample";
@@ -298,6 +303,7 @@
     colorPickerContainer.appendChild(colorPickerElement);
     colorPickerContainer.appendChild(colorSampleElement);
     colorSampleElement.appendChild(saveImageElement);
+    saveImageElement.appendChild(saveImagePicture);
 
     drawingCanvas = new DrawingCanvas("drawing-canvas");
     colorPicker = new ColorPicker("color-picker");
