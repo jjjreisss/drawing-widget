@@ -41,7 +41,9 @@
 
 
   DrawingCanvas.prototype.mouseUp = function (e) {
-    this.saveFrame();
+    if (this.drawing) {
+      this.saveFrame();  
+    }
     this.drawing = false;
   };
 
