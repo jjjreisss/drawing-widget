@@ -372,7 +372,7 @@
     clearImageElement.addEventListener(
       "click",
       function(e) {
-        var imagePNG = drawingCanvas.clear.bind(drawingCanvas)();
+        var imagePNG = drawingCanvas.hardReset.bind(drawingCanvas)();
       },
       true
     );
