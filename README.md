@@ -29,3 +29,7 @@ This will default to a 400px by 300px widget. In order to specify your own dimen
 ## History
 
 This widget was inspired by my full-stack web application [StampLife](http://github.com/jjjreisss/StampLife).
+
+## Demo
+
+You can see the widget demo'd on my [portfolio](http://jjjreisss.github.io) page.
