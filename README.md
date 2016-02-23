@@ -22,7 +22,7 @@ To embed the widget, add the following lines in the body of your HTML file:
 This will default to a 400px by 300px widget. In order to specify your own dimensions, change the code to:
 
 ```html
-  <div id="drawing-widget" width=[your width] height=[your height]>
+  <div id="drawing-widget" width=[your-width] height=[your-height]>
   <script async src="https://rawgit.com/jjjreisss/drawing-widget/master/widget.js"></script>
 ```
 
