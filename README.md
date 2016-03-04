@@ -4,6 +4,8 @@ This is a drawing widget built with HTML5 and Javascript. No external libraries 
 (e.g. JQuery) to reduce the weight and dependencies. The widget is designed to be embedded
 into webpages with as little work as possible.
 
+![Alt text](drawing-widget.png?raw=true "Screenshot")
+
 ## Features
  - **Colors:** Click the spectrum sidebar to change color. Click and drag to see your color change in real time.
  - **Stroke Size:** Use your mouse wheel to change the size of the stroke.
